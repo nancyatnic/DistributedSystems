@@ -1,0 +1,4 @@
+#Fri May 17 13:56:23 EEST 2019
+base.0=/home/nikolaus/Desktop/2018-2019/distributed/gxm_android/app/build/intermediates/transforms/dexMerger/debug/4
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Thu May 02 13:34:12 EEST 2019
+1.base=/home/nikolaus/Desktop/2018-2019/distributed/gxm_android/app/build/intermediates/merged_assets/debug/out
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=ASSET
+0.path=busPositions.txt
+0.set=ASSET
+0.base=/home/nikolaus/Desktop/2018-2019/distributed/gxm_android/app/build/intermediates/merged_assets/debug/out
+1.path=busLines.txt
