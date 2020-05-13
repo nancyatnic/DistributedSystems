@@ -2,7 +2,6 @@ package com.example.busbuddy.node;
 
 import com.example.busbuddy.communication.BrokerInfo;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class Node {
     public String brokerListToString() { //emfanisi twn brokers se morfi string me ip port k hash
         String s = "";
         for (BrokerInfo bi : brokers) {
-            s = s + bi.ip + "-" + bi.port + "-" + bi.hash + "-";
+            s = s + bi.IP + "-" + bi.Port + "-" + bi.Hash + "-";
         }
         return s; // ip-port-hash
     }
@@ -31,9 +30,9 @@ public class Node {
 
         for (int i = 0; i < n; i++) { // antistoixei gia kathe broker ta ip.port.hash
             BrokerInfo bi = new BrokerInfo();
-            bi.ip = tokens[3*i];
-            bi.port = Integer.parseInt(tokens[3*i + 1]);// metatrepoyme to string port kai hash se int
-            bi.hash = Integer.parseInt(tokens[3*i + 2]);
+            bi.IP = tokens[3*i];
+            bi.Port = Integer.parseInt(tokens[3*i + 1]);// metatrepoyme to string port kai hash se int
+            bi.Hash = Integer.parseInt(tokens[3*i + 2]);
             brokers.add(bi); // prosthetoume stin lista BrokerInfo to ip, port, hash
         }
     }    

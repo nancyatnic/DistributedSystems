@@ -5,18 +5,15 @@ import com.example.busbuddy.communication.BrokerInfo;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 
 
 public class Client extends Node {
 
-    private String server_ip = "192.168.1.4"; // configure first broker IP
-    private int port = 5001;        // configure first broker port
+    private String Server_IP = "192.168.1.4"; // configure first broker IP
+    private int Port = 5001;        // configure first broker port
 
     private int client_position = 0; // configure publisher position
 
@@ -25,31 +22,31 @@ public class Client extends Node {
 
     }
 
-    public Socket connect(int id) { //connect ston broker
+    public Socket connect(int ID) { //connect ston broker
         Socket requestSocket = null;
 
         try {
-            if (super.brokers.size() > id) {
-                server_ip = super.brokers.get(id).ip;
-                port = super.brokers.get(id).port;
+            if (super.brokers.size() > ID) {
+                Server_IP = super.brokers.get(ID).IP;
+                Port = super.brokers.get(ID).Port;
             }
-            requestSocket = new Socket(InetAddress.getByName(server_ip), port);
+            requestSocket = new Socket(InetAddress.getByName(Server_IP), Port);
         } catch (Exception ioException) {
             ioException.printStackTrace();
         }
         return requestSocket;
     }
 
-    public Socket connectWithTimeout(int id, int timeout) { //connect ston broker
+    public Socket connectWithTimeout(int ID, int Timeout) { //connect ston broker
         Socket requestSocket = null;
 
         try {
-            if (super.brokers.size() > id) {
-                server_ip = super.brokers.get(id).ip;
-                port = super.brokers.get(id).port;
+            if (super.brokers.size() > ID) {
+                Server_IP = super.brokers.get(ID).IP;
+                Port = super.brokers.get(ID).Port;
             }
-            requestSocket = new Socket(InetAddress.getByName(server_ip), port);
-            requestSocket.setSoTimeout(timeout);
+            requestSocket = new Socket(InetAddress.getByName(Server_IP), Port);
+            requestSocket.setSoTimeout(Timeout);
         } catch (Exception ioException) {
             ioException.printStackTrace();
         }
@@ -89,24 +86,24 @@ public class Client extends Node {
 
             System.out.println("----------- Brokers -----------");
             for (BrokerInfo x : brokers) {
-                System.out.println(x.ip + "-" + x.port + "-" + x.hash);
+                System.out.println(x.IP + "-" + x.Port + "-" + x.Hash);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public int findBroker(int hash) { //vriskoume ton antoistoixo broker meso tou hash
+    public int FindBroker(int Hash) { //vriskoume ton antoistoixo broker meso tou Hash
         if (brokers.size() == 1) {
             return 0;
         }
 
         for (int i = 0; i < brokers.size(); i++) {
-            if (hash <= brokers.get(i).hash) {
+            if (Hash <= brokers.get(i).Hash) {
                 return i;
             }
         }
-        return hash % brokers.size();
+        return Hash % brokers.size();
     }
 
 

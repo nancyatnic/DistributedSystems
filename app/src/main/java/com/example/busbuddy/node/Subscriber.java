@@ -9,23 +9,19 @@ import com.example.busbuddy.ConfigurationActivity;
 import com.example.busbuddy.MapsActivity;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Subscriber extends Client {
@@ -98,7 +94,7 @@ public class Subscriber extends Client {
         }
 
         public void run() {
-            unsubscribe(busLineID, configurationActivity);
+            Unsubscribe(busLineID, configurationActivity);
         }
     }
 
@@ -156,7 +152,7 @@ public class Subscriber extends Client {
         }
 
         public void run() {
-            subscribe(busLineID, configurationActivity);
+            Subscribe(busLineID, configurationActivity);
         }
     }
 
@@ -172,7 +168,7 @@ public class Subscriber extends Client {
         return t;
     }
 
-    public void subscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { // subscribe se ena buslineID
+    public void Subscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { // subscribe se ena buslineID
         Socket requestSocket = null;
         ObjectOutputStream out = null; //pairnei kai stelnei (roes)
         ObjectInputStream in = null;
@@ -184,9 +180,9 @@ public class Subscriber extends Client {
             subscribedLists.add(busLineID);
             subscribedThreads.put(busLineID, client);
 
-            int hash = hashTopic(busLineID);
+            int hash = HashTopic(busLineID);
 
-            int no = findBroker(hash);
+            int no = FindBroker(hash);
 
             requestSocket = connectWithTimeout(no, TIMEOUT);
 
@@ -258,7 +254,7 @@ public class Subscriber extends Client {
         }
     }
 
-    public void unsubscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { //unsubscribe antoistoixi gia ena buslineid
+    public void Unsubscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { //unsubscribe antoistoixi gia ena buslineid
         subscribedLists.remove(busLineID);
         Client client = subscribedThreads.get(busLineID);
 
@@ -281,18 +277,18 @@ public class Subscriber extends Client {
         }
     }
 
-    public int hashTopic(Integer lineId) throws NoSuchAlgorithmException { // algorithmos apo to stackoverflow gia ta hash
+    public int HashTopic(Integer lineId) throws NoSuchAlgorithmException { // algorithmos apo to stackoverflow gia ta Hash
         String x = String.valueOf(lineId);
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
+        MessageDigest m = MessageDigest.getInstance("MD5");
 
-        byte[] messageDigest = md.digest((x).getBytes());
+        byte[] messageDigest = m.digest((x).getBytes());
 
-        BigInteger no = new BigInteger(1, messageDigest);
+        BigInteger bi = new BigInteger(1, messageDigest);
 
-        int hash = Math.abs(no.intValue());
+        int Hash = Math.abs(bi.intValue());
 
-        return hash;
+        return Hash;
     }
 
 
