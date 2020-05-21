@@ -14,26 +14,28 @@ public class Node {
     public String busPositionsFile = "busPositions.txt";
     public String routeCodesFile = "RouteCodes.txt";
 
-    public String brokerListToString() { //emfanisi twn brokers se morfi string me ip port k hash
+    // We print the brokers as a String with IP, Port and Hash
+    public String brokerListToString() {
         String s = "";
         for (BrokerInfo bi : brokers) {
             s = s + bi.IP + "-" + bi.Port + "-" + bi.Hash + "-";
         }
-        return s; // ip-port-hash
+        return s; // IP-Port-Hash
     }
 
-    public void brokerListFromString(String s) { // xorizoume to string se 3 merh
+    // We break the String into 3 parts
+    public void brokerListFromString(String s) {
         String[] tokens = s.split("-");
         int n = tokens.length / 3;
 
-        brokers.clear(); // katharizoume tin lista
+        brokers.clear();                // We clear the List
 
-        for (int i = 0; i < n; i++) { // antistoixei gia kathe broker ta ip.port.hash
+        for (int i = 0; i < n; i++) {   // We match the brokers with the IP, Port and Hash
             BrokerInfo bi = new BrokerInfo();
             bi.IP = tokens[3*i];
-            bi.Port = Integer.parseInt(tokens[3*i + 1]);// metatrepoyme to string port kai hash se int
-            bi.Hash = Integer.parseInt(tokens[3*i + 2]);
-            brokers.add(bi); // prosthetoume stin lista BrokerInfo to ip, port, hash
+            bi.Port = Integer.parseInt(tokens[3*i + 1]);    // We turn Port from String to int
+            bi.Hash = Integer.parseInt(tokens[3*i + 2]);    // We turn Hash from String to int
+            brokers.add(bi); // We add IP, Port and Hash into the BrokerInfo list
         }
     }    
 }

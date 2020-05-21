@@ -6,8 +6,10 @@ public class BrokerInfo implements Comparable<BrokerInfo>{
     public int Port;
     public int Hash;
 
+
+    // Returns 0 if they are equal, if < it returns -1, if > it returns 1
     @Override
     public int compareTo(BrokerInfo o) {
-        return Integer.compare(this.Hash, o.Hash); // epistrefei 0 an einai isa, enw an this < o epistrefei -1, enw an this > o epistrefei 1
+        return Integer.compare(this.Hash, o.Hash);// Returns 0 if they are equal, if < it returns -1, if > it returns 1
     }
 }

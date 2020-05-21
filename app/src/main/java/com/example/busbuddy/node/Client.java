@@ -12,16 +12,17 @@ import java.util.Collections;
 
 public class Client extends Node {
 
-    private String Server_IP = "192.168.1.4"; // configure first broker IP
-    private int Port = 5001;        // configure first broker port
+    private String Server_IP = "192.168.1.4";   // We configure the first broker IP
+    private int Port = 5001;                    // We configure the first broker Port
 
-    private int client_position = 0; // configure publisher position
+    private int client_position = 0;            // We configure the publisher position
 
 
     public void init() {
 
     }
 
+    // We connect with the broker
     public Socket connect(int ID) { //connect ston broker
         Socket requestSocket = null;
 
@@ -37,6 +38,7 @@ public class Client extends Node {
         return requestSocket;
     }
 
+    // We connect with the broker (with a timeout)
     public Socket connectWithTimeout(int ID, int Timeout) { //connect ston broker
         Socket requestSocket = null;
 
@@ -53,7 +55,7 @@ public class Client extends Node {
         return requestSocket;
     }
 
-
+    // We close the connection
     public void disconnect(Socket requestSocket, ObjectOutputStream out,  ObjectInputStream in) { // kleisimo sindesis
         try {
             in.close();
@@ -64,6 +66,9 @@ public class Client extends Node {
         }
     }
 
+    // We get the brokerlist
+    // Communication with the broker
+    // We print the brokers
     public void getBrokerList(ObjectOutputStream out,  ObjectInputStream in) { // pernoume tin brokerlist,dialogos me ton broker, kai ektiposi twn brokers
         try {
             String s = in.readUTF();
@@ -93,6 +98,7 @@ public class Client extends Node {
         }
     }
 
+    // We find the responsible broker through the Hash
     public int FindBroker(int Hash) { //vriskoume ton antoistoixo broker meso tou Hash
         if (brokers.size() == 1) {
             return 0;

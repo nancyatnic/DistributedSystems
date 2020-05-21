@@ -144,7 +144,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        subscriber.initByContext(this, mainHandler); //arxikopoisi subscriber
+        // We initialize the Consumer
+        subscriber.initByContext(this, mainHandler);
     }
 
     @Override
@@ -178,45 +179,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-                /**
-                 * Manipulates the map once available.
-                 * This callback is triggered when the map is ready to be used.
-                 * This is where we can add markers or lines, add listeners or move the camera. In this case,
-                 * we just add a marker near Sydney, Australia.
-                 * If Google Play services is not installed on the device, the user will be prompted to install
-                 * it inside the SupportMapFragment. This method will only be triggered once the user has
-                 * installed Google Play services and returned to the app.
-                 */
-        @Override
-        public void onMapReady (GoogleMap googleMap){
-            mMap = googleMap;
+     /**
+      * Manipulates the map once available.
+      * This callback is triggered when the map is ready to be used.
+      * This is where we can add markers or lines, add listeners or move the camera. In this case,
+      * we just add a marker near Sydney, Australia.
+      * If Google Play services is not installed on the device, the user will be prompted to install
+      * it inside the SupportMapFragment. This method will only be triggered once the user has
+      * installed Google Play services and returned to the app.
+     */
 
-            LatLng athens = new LatLng(37.9837, 23.7293);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(athens));
-        }
+    @Override
+    public void onMapReady (GoogleMap googleMap){
+        mMap = googleMap;
 
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.mainmenu, menu);
-            return true;
-        }
-
-
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            // Handle item selection
-            switch (item.getItemId()) {
-                case R.id.idConfigure:
-                    Intent intent = new Intent(this, ConfigurationActivity.class);
-                    startActivity(intent);
-                    return true;
-                case R.id.idExit:
-                    this.finish();
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-        }
-
+        LatLng athens = new LatLng(37.9837, 23.7293);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(athens));
     }
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item){
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.idConfigure:
+                Intent intent = new Intent(this, ConfigurationActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.idExit:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+}

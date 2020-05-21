@@ -30,16 +30,16 @@ public class Subscriber extends Client {
     public TreeMap<Integer, String> databaseLineIDToTitle = new TreeMap<>(); // taxinomimeni lista me linedi kai titlous
     public List<Integer> subscribedLists = new ArrayList<Integer>(); //lista pou krataei ta leoforeia sta opoia exei ginei subscribe
 
-    public TreeMap<Integer, Client> subscribedThreads = new TreeMap<>(); // antoistixo thread gia tis sindeseis gia to subscribedLists
+    public TreeMap<Integer, Client> subscribedThreads = new TreeMap<>(); // Thread for the connections with the subscribedLists
 
-    public TreeMap<Integer, Socket> subscribedSockets = new TreeMap<>(); // antoistixo thread gia tis sindeseis gia to subscribedLists
+    public TreeMap<Integer, Socket> subscribedSockets = new TreeMap<>(); // Socket for the connections with the subscribedLists
 
     int mypos = 0;
     private Handler mainHandler;
 
     //  1 hashmap => log for each busline ID which thread serves it
     public boolean initByContext(Context context, Handler mainHandler) {
-        this.mainHandler = mainHandler; // arxikopoisi ,diavasma tou arxeiou, kai ektiposi
+        this.mainHandler = mainHandler;     // initialization, read of the file, printout
         super.init();
 
         try {
@@ -82,6 +82,7 @@ public class Subscriber extends Client {
         System.out.println("Data received: " + s);
     }
 
+    // Unsubscribe from a track and for a thread
     class UnsubscribeThread extends Thread { // stamatima sindromis gia ena leoforeio gia to thread
 
         Integer busLineID;
@@ -110,9 +111,9 @@ public class Subscriber extends Client {
 
         public void run() {
             try {
-                Socket requestSocket = connect(0);//sindesi tou subscriber
+                Socket requestSocket = connect(0);      // Consumer's connection
 
-                ObjectOutputStream out = null; //pairnei kai stelnei (roes)
+                ObjectOutputStream out = null;              // Gets and sends streams
                 ObjectInputStream in = null;
 
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
@@ -123,13 +124,13 @@ public class Subscriber extends Client {
                 msg.what = 1;
                 mainHandler.sendMessage(msg);
 
-                getBrokerList(out, in); // o subscriber lmvanei tin brokerlist apo ton broker
+                getBrokerList(out, in);                     // The Consumer receives the brokerlist from the broker
 
                 Message msg2 = mainHandler.obtainMessage();
                 msg2.what = 2;
                 mainHandler.sendMessage(msg2);
 
-                disconnect(requestSocket, out, in); // kleisimo sindesis
+                disconnect(requestSocket, out, in);         // We close the connection
 
                 Message msg3 = mainHandler.obtainMessage();
                 msg3.what = 3;
@@ -156,21 +157,24 @@ public class Subscriber extends Client {
         }
     }
 
+    // We subscribe (with thread) to a track
     public Thread subscribeWithThread(Integer busLineID, ConfigurationActivity configurationActivity) { // subscribe se ena buslineID
         Thread t = new SubscribeThread(busLineID, configurationActivity);
         t.start();
         return t;
     }
 
+    // We unsubscribe (with thread) from a track
     public Thread unsubscribeWithThread(Integer busLineID, ConfigurationActivity configurationActivity) { // subscribe se ena buslineID
         Thread t = new UnsubscribeThread(busLineID, configurationActivity);
         t.start();
         return t;
     }
 
+    // We subscribe to a track
     public void Subscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { // subscribe se ena buslineID
         Socket requestSocket = null;
-        ObjectOutputStream out = null; //pairnei kai stelnei (roes)
+        ObjectOutputStream out = null;      // Gets and sends streams
         ObjectInputStream in = null;
 
         try {
@@ -254,6 +258,7 @@ public class Subscriber extends Client {
         }
     }
 
+    // We unsubscribe from a track
     public void Unsubscribe(Integer busLineID, final ConfigurationActivity configurationActivity) { //unsubscribe antoistoixi gia ena buslineid
         subscribedLists.remove(busLineID);
         Client client = subscribedThreads.get(busLineID);
@@ -277,7 +282,8 @@ public class Subscriber extends Client {
         }
     }
 
-    public int HashTopic(Integer lineId) throws NoSuchAlgorithmException { // algorithmos apo to stackoverflow gia ta Hash
+    // We hash the 'txt' variable using the MD5 hashing algorithm.
+    public int HashTopic(Integer lineId) throws NoSuchAlgorithmException {
         String x = String.valueOf(lineId);
 
         MessageDigest m = MessageDigest.getInstance("MD5");
@@ -291,7 +297,7 @@ public class Subscriber extends Client {
         return Hash;
     }
 
-
+    // When you subscribe in the menu, we print a list with the tracks
     public String[] getLines() {// otan patas subscribe sto menu , print lista me ta lines
         int length = databaseLineIDToTitle.size();
 
@@ -300,7 +306,7 @@ public class Subscriber extends Client {
         } else {
             int subs = 0;
 
-            for (Map.Entry<Integer, String> pair : databaseLineIDToTitle.entrySet()) { // entryset epistrefei ta periexomena tou hashmap
+            for (Map.Entry<Integer, String> pair : databaseLineIDToTitle.entrySet()) {      // Entryset, returns the hashmap
                 if (subscribedLists.contains(pair.getKey())) {
                     subs++;
                 }
@@ -310,7 +316,7 @@ public class Subscriber extends Client {
 
             int i = 0;
 
-            for (Map.Entry<Integer, String> pair : databaseLineIDToTitle.entrySet()) { // entryset epistrefei ta periexomena tou hashmap
+            for (Map.Entry<Integer, String> pair : databaseLineIDToTitle.entrySet()) {      // Entryset, returns the hashmap
                 if (!subscribedLists.contains(pair.getKey())) {
                     array[i++] = String.format("%03d - %s \n ", pair.getKey(), pair.getValue());
                 }
@@ -319,6 +325,7 @@ public class Subscriber extends Client {
         }
     }
 
+    // When you unsubscribe in the menu, we print a list with the tracks you are subscribed to
     public String[] getSubscribedLines() {// otan patas unsubscribe sto menu , print lista me ta lines pou eisai subscribed
         int length = subscribedLists.size();
 
